@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Phoenix Printing Solutions</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
+body{height:100vh;background:#f2f3f5;overflow:hidden}
+
+/* APP STRUCTURE */
+.app{
+  height:100vh;
+  display:grid;
+  grid-template-rows:60px 1fr 40px;
+}
+
+/* HEADER */
+header{
+  background:#ffffff;
+  border-bottom:1px solid #ddd;
+  padding:0 24px;
+  display:flex;
+  align-items:center;
+  font-weight:bold;
+}
+
+/* BODY */
+.body{
+  display:flex;
+  height:100%;
+}
+
+/* SIDEBAR (ALWAYS VISIBLE) */
+aside{
+  width:260px;
+  background:#e5e7eb;
+  padding:16px;
+  overflow-y:auto;
+  flex-shrink:0;
+  border-right:1px solid #d6d6d6;
+}
+
+/* MENU */
+.menu-section{margin-bottom:16px}
+.menu-header{
+  font-size:14px;
+  font-weight:700;
+  text-transform:uppercase;
+  padding:6px 8px;
+  cursor:pointer;
+  color:#111827;
+}
+.menu-items{
+  display:none;
+  margin-top:6px;
+}
+.menu-item{
+  padding:8px 14px;
+  margin:4px 0;
+  font-size:15px;
+  color:#111827;
+  border-radius:8px;
+  cursor:pointer;
+}
+.menu-item:hover{background:#d1d5db}
+.menu-item.active{background:#d1d5db;font-weight:700}
+
+/* CONTENT AREA */
+main{
+  flex:1;
+  background:#ffffff;
+  overflow:hidden;
+}
+#content-frame{
+  width:100%;
+  height:100%;
+  border:none;
+}
+
+/* FOOTER */
+footer{
+  background:#ffffff;
+  border-top:1px solid #ddd;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+  color:#666;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- HEADER -->
+<header>
+  logo.png Phoenix Printing Solutions
+</header>
+
+<div class="body">
+
+<!-- SIDEBAR -->
+<aside>
+
+  <div class="menu-section">
+    <div class="menu-header" onclick="toggleMenu(this)">Dashboard</div>
+    <div class="menu-items">
+      <div class="menu-item" onclick="loadPage('overview.html',this)">Overview</div>
+    </div>
+  </div>
+
+  <div class="menu-section">
+    <div class="menu-header" onclick="toggleMenu(this)">Main</div>
+    <div class="menu-items">
+      <div class="menu-item" onclick="loadPage('Pending.html',this)">Pending</div>
+      <div class="menu-item" onclick="loadPage('InProgress.html',this)">In Progress</div>
+      <div class="menu-item" onclick="loadPage('admininvoice.html',this)">Invoice</div>
+      <div class="menu-item" onclick="loadPage('Interactions.html',this)">Interactions</div>
+      <div class="menu-item" onclick="loadPage('Incomplete.html',this)">Incomplete</div>
+    </div>
+  </div>
+
+  <div class="menu-section">
+    <div class="menu-header" onclick="toggleMenu(this)">Profiles</div>
+    <div class="menu-items">
+      <div class="menu-item" onclick="loadPage('Clients.html',this)">Clients</div>
+      <div class="menu-item" onclick="loadPage('Businesses.html',this)">Businesses</div>
+    </div>
+  </div>
+
+  <div class="menu-section">
+    <div class="menu-header" onclick="toggleMenu(this)">Accounting</div>
+    <div class="menu-items">
+      <div class="menu-item" onclick="loadPage('MonthlyExpenses.html',this)">Monthly Expenses</div>
+      <div class="menu-item" onclick="loadPage('PaidCompleted.html',this)">Paid – Completed</div>
+      <div class="menu-item" onclick="loadPage('MonthlyRevenue.html',this)">Monthly Revenue</div>
+    </div>
+  </div>
+
+  <div class="menu-section">
+    <div class="menu-header" onclick="toggleMenu(this)">Admin Space</div>
+    <div class="menu-items">
+      <div class="menu-item" onclick="loadPage('UserManagement.html',this)">User Management</div>
+      <div class="menu-item" onclick="loadPage('PrinterMaintenance.html',this)">Printer Maintenance</div>
+      <div class="menu-item" onclick="loadPage('CarMaintenance.html',this)">Car Maintenance</div>
+    </div>
+  </div>
+
+  <div class="menu-section">
+    <div class="menu-header" onclick="toggleMenu(this)">System</div>
+    <div class="menu-items">
+      <div class="menu-item" onclick="loadPage('FilesArchive.html',this)">Files & Archive</div>
+    </div>
+  </div>
+
+</aside>
+
+<!-- CONTENT -->
+<main>
+ <iframe id="content-frame" src="overview.html"></iframe>
+</main>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  © 2026 Phoenix Printing Solutions
+</footer>
+
+</div>
+
+<script>
+function toggleMenu(header){
+  const items = header.nextElementSibling;
+  items.style.display = items.style.display === "block" ? "none" : "block";
+}
+
+function loadPage(page, el){
+  document.getElementById('content-frame').src = page;
+  document.querySelectorAll('.menu-item').forEach(i=>i.classList.remove('active'));
+  el.classList.add('active');
+}
+</script>
+
+</body>
+</html>
