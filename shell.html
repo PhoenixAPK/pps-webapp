@@ -7,14 +7,12 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
 body{height:100vh;background:#f2f3f5;overflow:hidden}
-
 /* APP STRUCTURE */
 .app{
  height:100vh;
  display:grid;
  grid-template-rows:60px 1fr 40px;
 }
-
 /* HEADER */
 header{
  background:#ffffff;
@@ -26,18 +24,13 @@ header{
  font-weight:bold;
 }
 
-.header-left{
- display:flex;
- align-items:center;
- gap:8px;
-}
-
+/* ✅ ADDED */
 .header-right{
  display:none;
  align-items:center;
  gap:16px;
- font-weight:normal;
  font-size:14px;
+ font-weight:normal;
 }
 
 .logout-btn{
@@ -47,18 +40,14 @@ header{
  cursor:pointer;
  background:#e5e7eb;
 }
-
-.logout-btn:hover{
- background:#d1d5db;
-}
+.logout-btn:hover{background:#d1d5db}
 
 /* BODY */
 .body{
  display:flex;
  height:100%;
 }
-
-/* SIDEBAR */
+/* SIDEBAR (ALWAYS VISIBLE) */
 aside{
  width:260px;
  background:#e5e7eb;
@@ -67,7 +56,6 @@ aside{
  flex-shrink:0;
  border-right:1px solid #d6d6d6;
 }
-
 /* MENU */
 .menu-section{margin-bottom:16px}
 .menu-header{
@@ -78,7 +66,10 @@ aside{
  cursor:pointer;
  color:#111827;
 }
-.menu-items{display:none;margin-top:6px}
+.menu-items{
+ display:none;
+ margin-top:6px;
+}
 .menu-item{
  padding:8px 14px;
  margin:4px 0;
@@ -89,8 +80,7 @@ aside{
 }
 .menu-item:hover{background:#d1d5db}
 .menu-item.active{background:#d1d5db;font-weight:700}
-
-/* CONTENT */
+/* CONTENT AREA */
 main{
  flex:1;
  background:#ffffff;
@@ -101,7 +91,6 @@ main{
  height:100%;
  border:none;
 }
-
 /* FOOTER */
 footer{
  background:#ffffff;
@@ -114,90 +103,85 @@ footer{
 }
 </style>
 </head>
-
 <body>
 <div class="app">
 
 <!-- HEADER -->
 <header>
-  <div class="header-left">
-    logo.png Phoenix Printing Solutions
-  </div>
+ logo.png Phoenix Printing Solutions
 
-  <div class="header-right" id="user-info">
-    <span id="user-label"></span>
-    <button class="logout-btn" onclick="logout()">Logout</button>
-  </div>
+ <!-- ✅ ADDED -->
+ <div class="header-right" id="user-info">
+   <span id="user-label"></span>
+   <button class="logout-btn" onclick="logout()">Logout</button>
+ </div>
 </header>
 
 <div class="body">
-
 <!-- SIDEBAR -->
 <aside>
-  <div class="menu-section">
-    <div class="menu-header" onclick="toggleMenu(this)">Dashboard</div>
-    <div class="menu-items">
-      <div class="menu-item" onclick="loadPage('overview.html',this)">Overview</div>
-    </div>
+ <div class="menu-section">
+  <div class="menu-header" onclick="toggleMenu(this)">Dashboard</div>
+  <div class="menu-items">
+   <div class="menu-item" onclick="loadPage('overview.html',this)">Overview</div>
   </div>
+ </div>
 
-  <div class="menu-section">
-    <div class="menu-header" onclick="toggleMenu(this)">Main</div>
-    <div class="menu-items">
-      <div class="menu-item" onclick="loadPage('pendingqueue.html',this)">Pending</div>
-      <div class="menu-item" onclick="loadPage('inprogress.html',this)">In Progress</div>
-      <div class="menu-item" onclick="loadPage('admininvoice.html',this)">Invoice</div>
-      <div class="menu-item" onclick="loadPage('interactions.html',this)">Interactions</div>
-      <div class="menu-item" onclick="loadPage('incomplete.html',this)">Incomplete</div>
-    </div>
+ <div class="menu-section">
+  <div class="menu-header" onclick="toggleMenu(this)">Main</div>
+  <div class="menu-items">
+   <div class="menu-item" onclick="loadPage('pendingqueue.html',this)">Pending</div>
+   <div class="menu-item" onclick="loadPage('inprogress.html',this)">In Progress</div>
+   <div class="menu-item" onclick="loadPage('admininvoice.html',this)">Invoice</div>
+   <div class="menu-item" onclick="loadPage('interactions.html',this)">Interactions</div>
+   <div class="menu-item" onclick="loadPage('incomplete.html',this)">Incomplete</div>
   </div>
+ </div>
 
-  <div class="menu-section">
-    <div class="menu-header" onclick="toggleMenu(this)">Profiles</div>
-    <div class="menu-items">
-      <div class="menu-item" onclick="loadPage('clients.html',this)">Clients</div>
-      <div class="menu-item" onclick="loadPage('businesses.html',this)">Businesses</div>
-    </div>
+ <div class="menu-section">
+  <div class="menu-header" onclick="toggleMenu(this)">Profiles</div>
+  <div class="menu-items">
+   <div class="menu-item" onclick="loadPage('clients.html',this)">Clients</div>
+   <div class="menu-item" onclick="loadPage('businesses.html',this)">Businesses</div>
   </div>
+ </div>
 
-  <div class="menu-section">
-    <div class="menu-header" onclick="toggleMenu(this)">Accounting</div>
-    <div class="menu-items">
-      <div class="menu-item" onclick="loadPage('monthlyExpenses.html',this)">Monthly Expenses</div>
-      <div class="menu-item" onclick="loadPage('paidCompleted.html',this)">Paid – Completed</div>
-      <div class="menu-item" onclick="loadPage('monthlyRevenue.html',this)">Monthly Revenue</div>
-    </div>
+ <div class="menu-section">
+  <div class="menu-header" onclick="toggleMenu(this)">Accounting</div>
+  <div class="menu-items">
+   <div class="menu-item" onclick="loadPage('monthlyExpenses.html',this)">Monthly Expenses</div>
+   <div class="menu-item" onclick="loadPage('paidCompleted.html',this)">Paid – Completed</div>
+   <div class="menu-item" onclick="loadPage('monthlyRevenue.html',this)">Monthly Revenue</div>
   </div>
+ </div>
 
-  <div class="menu-section">
-    <div class="menu-header" onclick="toggleMenu(this)">Admin Space</div>
-    <div class="menu-items">
-      <div class="menu-item" onclick="loadPage('userManagement.html',this)">User Management</div>
-      <div class="menu-item" onclick="loadPage('printerMaintenance.html',this)">Printer Maintenance</div>
-      <div class="menu-item" onclick="loadPage('carMaintenance.html',this)">Car Maintenance</div>
-    </div>
+ <div class="menu-section">
+  <div class="menu-header" onclick="toggleMenu(this)">Admin Space</div>
+  <div class="menu-items">
+   <div class="menu-item" onclick="loadPage('userManagement.html',this)">User Management</div>
+   <div class="menu-item" onclick="loadPage('printerMaintenance.html',this)">Printer Maintenance</div>
+   <div class="menu-item" onclick="loadPage('carMaintenance.html',this)">Car Maintenance</div>
   </div>
+ </div>
 
-  <div class="menu-section">
-    <div class="menu-header" onclick="toggleMenu(this)">System</div>
-    <div class="menu-items">
-      <div class="menu-item" onclick="loadPage('filesandarchive.html',this)">Files & Archive</div>
-    </div>
+ <div class="menu-section">
+  <div class="menu-header" onclick="toggleMenu(this)">System</div>
+  <div class="menu-items">
+   <div class="menu-item" onclick="loadPage('filesandarchive.html',this)">Files & Archive</div>
   </div>
+ </div>
 </aside>
 
 <!-- CONTENT -->
 <main>
-  <iframe id="content-frame" src="overview.html"></iframe>
+ <iframe id="content-frame" src="overview.html"></iframe>
 </main>
-
 </div>
 
 <!-- FOOTER -->
 <footer>
  © 2026 Phoenix Printing Solutions
 </footer>
-
 </div>
 
 <script>
@@ -205,30 +189,29 @@ function toggleMenu(header){
  const items = header.nextElementSibling;
  items.style.display = items.style.display === "block" ? "none" : "block";
 }
-
 function loadPage(page, el){
  document.getElementById('content-frame').src = page;
  document.querySelectorAll('.menu-item').forEach(i=>i.classList.remove('active'));
  el.classList.add('active');
 }
 
-/* AUTH HEADER LOGIC */
+/* ✅ ADDED AUTH LOGIC */
 const name = sessionStorage.getItem("displayName");
 const role = sessionStorage.getItem("userRole");
 
 if(name && role){
- document.getElementById("user-label").textContent = `Logged in as: ${role} – ${name}`;
+ document.getElementById("user-label").textContent =
+  `Logged in as: ${role} – ${name}`;
  document.getElementById("user-info").style.display = "flex";
 }else{
- window.location.href = "adminlogin";
+ window.location.href = "adminlogin.html";
 }
 
 function logout(){
  sessionStorage.clear();
- window.location.href = "adminlogin";
+ window.location.href = "adminlogin.html";
 }
 </script>
 
 </body>
 </html>
-``
