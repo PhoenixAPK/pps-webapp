@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Pending Queue</title>
+<title>Pending Requests</title>
 
-<!-- SUPABASE (LOAD ONCE ONLY) -->
+<!-- SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="assets/js/supabase.js"></script>
+<script src="../assets/js/supabase.js"></script>
 </head>
 
 <body>
@@ -14,7 +14,7 @@
 <div style="padding:24px;">
   <h2 style="margin-bottom:16px;">Pending Requests</h2>
 
-  <table style="width:100%; border-collapse:collapse;" border="1" cellpadding="8">
+  <table border="1" cellpadding="8" cellspacing="0" style="width:100%; border-collapse:collapse; background:#fff;">
     <thead style="background:#f3f3f3;">
       <tr>
         <th>REF CODE</th>
@@ -56,14 +56,14 @@ window.moveToInProgress = async (id) => {
   }
 };
 
-function handleRequestClick(id){
+function handleRequestClick(id, mode){
   window.supabaseClient
     .from("pps_queue")
     .update({ status: "in-progress" })
     .eq("request_id", id);
 
   window.moveToInProgress(id);
-  window.location.href = `admininvoice.html?request_id=${id}`;
+  window.location.href = `admininvoice.html?request_id=${id}&mode=${mode}`;
 }
 
 async function fetchAndRender(){
@@ -73,10 +73,11 @@ async function fetchAndRender(){
     .or("status.eq.pending,status.is.null")
     .order("created_at", { ascending:false });
 
-  if(error){
+  if (error) {
     console.error(error);
     return;
   }
+
   render(data || []);
 }
 
@@ -93,13 +94,13 @@ function render(items){
   items.forEach(req => {
     const tr = document.createElement("tr");
     tr.style.cursor = "pointer";
-    tr.onclick = () => handleRequestClick(req.request_id);
+
+    tr.onclick = () =>
+      handleRequestClick(req.request_id, req.sourceMode);
 
     const time = req.created_at
-      ? new Date(req.created_at).toLocaleTimeString([], {
-          hour:"2-digit",
-          minute:"2-digit"
-        })
+      ? new Date(req.created_at)
+          .toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})
       : "--:--";
 
     tr.innerHTML = `
@@ -107,7 +108,7 @@ function render(items){
       <td>${req.client?.name || "Unknown"}</td>
       <td>${req.location?.city || "---"}</td>
       <td>${(req.workspaces || []).length}</td>
-      <td>${req.sourceMode || "-"}</td>
+      <td>${req.sourceMode}</td>
       <td>${time}</td>
     `;
     tbody.appendChild(tr);
