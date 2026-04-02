@@ -4,108 +4,136 @@
 <meta charset="UTF-8">
 <title>Phoenix Printing Solutions</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
 body{height:100vh;background:#f2f3f5;overflow:hidden}
 
 /* APP STRUCTURE */
 .app{
-  height:100vh;
-  display:grid;
-  grid-template-rows:60px 1fr 40px;
+ height:100vh;
+ display:grid;
+ grid-template-rows:60px 1fr 40px;
 }
 
 /* HEADER */
 header{
-  background:#ffffff;
-  border-bottom:1px solid #ddd;
-  padding:0 24px;
-  display:flex;
-  align-items:center;
-  font-weight:bold;
+ background:#ffffff;
+ border-bottom:1px solid #ddd;
+ padding:0 24px;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ font-weight:bold;
+}
+
+.header-left{
+ display:flex;
+ align-items:center;
+ gap:8px;
+}
+
+.header-right{
+ display:none;
+ align-items:center;
+ gap:16px;
+ font-weight:normal;
+ font-size:14px;
+}
+
+.logout-btn{
+ padding:6px 12px;
+ border:none;
+ border-radius:6px;
+ cursor:pointer;
+ background:#e5e7eb;
+}
+
+.logout-btn:hover{
+ background:#d1d5db;
 }
 
 /* BODY */
 .body{
-  display:flex;
-  height:100%;
+ display:flex;
+ height:100%;
 }
 
-/* SIDEBAR (ALWAYS VISIBLE) */
+/* SIDEBAR */
 aside{
-  width:260px;
-  background:#e5e7eb;
-  padding:16px;
-  overflow-y:auto;
-  flex-shrink:0;
-  border-right:1px solid #d6d6d6;
+ width:260px;
+ background:#e5e7eb;
+ padding:16px;
+ overflow-y:auto;
+ flex-shrink:0;
+ border-right:1px solid #d6d6d6;
 }
 
 /* MENU */
 .menu-section{margin-bottom:16px}
 .menu-header{
-  font-size:14px;
-  font-weight:700;
-  text-transform:uppercase;
-  padding:6px 8px;
-  cursor:pointer;
-  color:#111827;
+ font-size:14px;
+ font-weight:700;
+ text-transform:uppercase;
+ padding:6px 8px;
+ cursor:pointer;
+ color:#111827;
 }
-.menu-items{
-  display:none;
-  margin-top:6px;
-}
+.menu-items{display:none;margin-top:6px}
 .menu-item{
-  padding:8px 14px;
-  margin:4px 0;
-  font-size:15px;
-  color:#111827;
-  border-radius:8px;
-  cursor:pointer;
+ padding:8px 14px;
+ margin:4px 0;
+ font-size:15px;
+ color:#111827;
+ border-radius:8px;
+ cursor:pointer;
 }
 .menu-item:hover{background:#d1d5db}
 .menu-item.active{background:#d1d5db;font-weight:700}
 
-/* CONTENT AREA */
+/* CONTENT */
 main{
-  flex:1;
-  background:#ffffff;
-  overflow:hidden;
+ flex:1;
+ background:#ffffff;
+ overflow:hidden;
 }
 #content-frame{
-  width:100%;
-  height:100%;
-  border:none;
+ width:100%;
+ height:100%;
+ border:none;
 }
 
 /* FOOTER */
 footer{
-  background:#ffffff;
-  border-top:1px solid #ddd;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:12px;
-  color:#666;
+ background:#ffffff;
+ border-top:1px solid #ddd;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:12px;
+ color:#666;
 }
 </style>
 </head>
 
 <body>
-
 <div class="app">
 
 <!-- HEADER -->
 <header>
-  logo.png Phoenix Printing Solutions
+  <div class="header-left">
+    logo.png Phoenix Printing Solutions
+  </div>
+
+  <div class="header-right" id="user-info">
+    <span id="user-label"></span>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
 </header>
 
 <div class="body">
 
 <!-- SIDEBAR -->
 <aside>
-
   <div class="menu-section">
     <div class="menu-header" onclick="toggleMenu(this)">Dashboard</div>
     <div class="menu-items">
@@ -156,35 +184,51 @@ footer{
       <div class="menu-item" onclick="loadPage('filesandarchive.html',this)">Files & Archive</div>
     </div>
   </div>
-
 </aside>
 
 <!-- CONTENT -->
 <main>
- <iframe id="content-frame" src="overview.html"></iframe>
+  <iframe id="content-frame" src="overview.html"></iframe>
 </main>
 
 </div>
 
 <!-- FOOTER -->
 <footer>
-  © 2026 Phoenix Printing Solutions
+ © 2026 Phoenix Printing Solutions
 </footer>
 
 </div>
 
 <script>
 function toggleMenu(header){
-  const items = header.nextElementSibling;
-  items.style.display = items.style.display === "block" ? "none" : "block";
+ const items = header.nextElementSibling;
+ items.style.display = items.style.display === "block" ? "none" : "block";
 }
 
 function loadPage(page, el){
-  document.getElementById('content-frame').src = page;
-  document.querySelectorAll('.menu-item').forEach(i=>i.classList.remove('active'));
-  el.classList.add('active');
+ document.getElementById('content-frame').src = page;
+ document.querySelectorAll('.menu-item').forEach(i=>i.classList.remove('active'));
+ el.classList.add('active');
+}
+
+/* AUTH HEADER LOGIC */
+const name = sessionStorage.getItem("displayName");
+const role = sessionStorage.getItem("userRole");
+
+if(name && role){
+ document.getElementById("user-label").textContent = `Logged in as: ${role} – ${name}`;
+ document.getElementById("user-info").style.display = "flex";
+}else{
+ window.location.href = "adminlogin";
+}
+
+function logout(){
+ sessionStorage.clear();
+ window.location.href = "adminlogin";
 }
 </script>
 
 </body>
 </html>
+``
