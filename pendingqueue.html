@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Pending Queue</title>
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase.js"></script>
+</head>
+
+<body>
+
+<table style="width:100%; border-collapse:collapse;">
+  <thead>
+    <tr>
+      <th>REF CODE</th>
+      <th>CLIENT / BUSINESS</th>
+      <th>CITY</th>
+      <th>WORKSPACES</th>
+      <th>MODE</th>
+      <th>TIME</th>
+    </tr>
+  </thead>
+  <tbody id="queueBody"></tbody>
+</table>
+
+<script>
+(function(){
+
+window.moveToInProgress = async (id) => {
+  try {
+    await fetch(
+      "https://puymabrkwtpvhropcvqk.supabase.co/functions/v1/move-to-inprogress",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization":
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1eW1hYnJrd3Rwdmhyb3BjdnFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyOTEyOTUsImV4cCI6MjA4ODg2NzI5NX0.kg7WvMRblzVf2iaQbt4Zz7DuNDgHGn9AKFHM_maGiTk"
+        },
+        body: JSON.stringify({ request_id: id })
+      }
+    );
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+function handleRequestClick(id){
+  window.supabaseClient
+    .from("pps_queue")
+    .update({ status: "in-progress" })
+    .eq("request_id", id);
+
+  window.moveToInProgress(id);
+  window.location.href = `admininvoice.html?request_id=${id}`;
+}
+
+async function fetchAndRender(){
+  const { data, error } = await window.supabaseClient
+    .from("pps_queue")
+    .select("*")
+    .or("status.eq.pending,status.is.null")
+    .order("created_at", { ascending:false });
+
+  if(error) return console.error(error);
+  render(data || []);
+}
+
+function render(items){
+  const tbody = document.getElementById("queueBody");
+  tbody.innerHTML = "";
+
+  if(items.length === 0){
+    tbody.innerHTML =
+      "<tr><td colspan='6'>No pending requests</td></tr>";
+    return;
+  }
+
+  items.forEach(req => {
+    const tr = document.createElement("tr");
+
+    tr.onclick = () => handleRequestClick(req.request_id);
+
+    const time = req.created_at
+      ? new Date(req.created_at)
+          .toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})
+      : "--:--";
+
+    tr.innerHTML = `
+      <td>#PPS-${req.request_id.slice(0,8).toUpperCase()}</td>
+      <td>${req.client?.name || "Unknown"}</td>
+      <td>${req.location?.city || "---"}</td>
+      <td>${(req.workspaces || []).length}</td>
+      <td>${req.sourceMode}</td>
+      <td>${time}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function subscribeToChanges(){
+  window.supabaseClient
+    .channel("pps_queue_changes")
+    .on("postgres_changes",
+        { event:"*", table:"pps_queue" },
+        fetchAndRender)
+    .subscribe();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  fetchAndRender();
+  subscribeToChanges();
+});
+
+})();
+</script>
+
+</body>
+</html>
