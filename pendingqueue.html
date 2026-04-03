@@ -6,14 +6,13 @@
 <title>Phoenix Printing Solutions - Pending Queue</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Plus+Jakarta+Sans:wght@300;500;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
+
 <script src="../assets/js/auth.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../assets/js/supabase.js"></script>
 
 <style>
-:root {
-  --pps-green:#066d44;
-}
+:root { --pps-green:#066d44; }
 
 *{margin:0;padding:0;box-sizing:border-box}
 
@@ -23,13 +22,12 @@ body{
   color:#333;
   overflow-x:hidden;
   display:flex;
-  justify-content:center;
+  flex-direction:column;
+  align-items:center;
   padding:40px 0;
 }
 
-/* HEADER REMOVED */
-/* FOOTER REMOVED */
-/* BACKGROUND IMAGE + OVERLAY REMOVED */
+/* background image + overlay REMOVED */
 
 .container{
   width:90%;
@@ -47,6 +45,8 @@ body{
   letter-spacing:3px;
   background:var(--pps-green);
   color:#fff;
+  display:flex;
+  align-items:center;
 }
 
 .status-dot{
@@ -58,11 +58,7 @@ body{
   margin-right:10px;
 }
 
-table{
-  width:100%;
-  border-collapse:collapse;
-  text-align:left;
-}
+table{width:100%;border-collapse:collapse;text-align:left}
 
 thead{
   background:#fafafa;
@@ -87,9 +83,7 @@ td{
   color:#333;
 }
 
-tr:hover td{
-  background:#f9f9f9;
-}
+tr:hover td{background:#f9f9f9}
 
 .ref-code{
   color:var(--pps-green);
@@ -116,7 +110,7 @@ tr:hover td{
 
 <div class="container">
   <div class="table-title">
-    <span><span class="status-dot"></span>PENDING REQUESTS</span>
+    <span class="status-dot"></span>PENDING REQUESTS
   </div>
 
   <table>
@@ -160,41 +154,46 @@ tr:hover td{
     } catch(e){}
 
     window.moveToInProgress(id);
-    window.location.href=`admininvoice.html?request_id=${id}`;
+    window.location.href = `admininvoice.html?request_id=${id}`;
   }
 
   async function fetchAndRender(){
-    const { data, error } = await window.supabaseClient
-      .from('pps_queue')
-      .select('*')
-      .or('status.eq.pending,status.is.null')
-      .order('created_at', { ascending: false });
+    try{
+      const { data, error } = await window.supabaseClient
+        .from('pps_queue')
+        .select('*')
+        .or('status.eq.pending,status.is.null')
+        .order('created_at', { ascending:false });
 
-    if(error) return;
+      if(error) return;
 
-    const tbody=document.getElementById('queueBody');
-    tbody.innerHTML='';
+      render(data || []);
+    }catch(err){console.error(err);}
+  }
 
-    if(data.length===0){
-      tbody.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:50px;opacity:.5">No pending requests found.</td></tr>`;
+  function render(items){
+    const tbody=document.getElementById("queueBody");
+    tbody.innerHTML="";
+
+    if(items.length===0){
+      tbody.innerHTML="<tr><td colspan='6' style='text-align:center;padding:50px;opacity:.5'>No pending requests</td></tr>";
       return;
     }
 
-    data.forEach(req=>{
-      const tr=document.createElement('tr');
-      const mode=req.sourceMode;
+    items.forEach(req=>{
+      const tr=document.createElement("tr");
       const time=req.created_at
         ? new Date(req.created_at).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})
-        : '--:--';
+        : "--:--";
 
-      tr.onclick=()=>handleRequestClick(req.request_id,mode);
+      tr.onclick=()=>handleRequestClick(req.request_id, req.sourceMode);
 
       tr.innerHTML=`
         <td class="ref-code">#PPS-${req.request_id.slice(0,8).toUpperCase()}</td>
         <td><strong>${req.client?.name||'Unknown'}</strong></td>
         <td>${req.location?.city||'---'}</td>
         <td>${(req.workspaces||[]).length}</td>
-        <td><span class="mode-tag ${mode==='entrepreneur'?'mode-entrepreneur':'mode-client'}">${mode}</span></td>
+        <td><span class="mode-tag ${req.sourceMode==='entrepreneur'?'mode-entrepreneur':'mode-client'}">${req.sourceMode}</span></td>
         <td>${time}</td>`;
       tbody.appendChild(tr);
     });
@@ -202,12 +201,12 @@ tr:hover td{
 
   function subscribeToChanges(){
     window.supabaseClient
-      .channel('pps_queue_changes')
-      .on('postgres_changes',{event:'*',table:'pps_queue'},fetchAndRender)
+      .channel("pps_queue_changes")
+      .on("postgres_changes",{event:"*",table:"pps_queue"},fetchAndRender)
       .subscribe();
   }
 
-  document.addEventListener('DOMContentLoaded',()=>{
+  document.addEventListener("DOMContentLoaded",()=>{
     fetchAndRender();
     subscribeToChanges();
   });
