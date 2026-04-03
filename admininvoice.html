@@ -544,8 +544,7 @@ async function downloadInvoice() {
     if(typeof updateProjectDuration==='function') updateProjectDuration();
     var pics=document.getElementById('mandatoryPicturesOutput'); if(pics) pics.value=need;
    setTimeout(() => {
-  if (typeof handleCity === "function") handleCity();
-  if (typeof calculateAreas === "function") calculateAreas();
+    if (typeof calculateAreas === "function") calculateAreas();
   if (typeof updateTotalPictureCount === "function") updateTotalPictureCount();
   if (typeof updateProjectDuration === "function") updateProjectDuration();
 }, 0);
