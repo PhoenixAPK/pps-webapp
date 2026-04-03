@@ -356,6 +356,52 @@
  #calculatorPage .client-info{ grid-template-columns: repeat(3, 1fr) !important; }
  #calculatorPage .costs{ grid-template-columns: repeat(3, 1fr) !important; }
  #calculatorPage .client-info > div, #calculatorPage .costs > div{ min-width:0 !important; }
+/* ===== DEVIsUALIZE ONLY (NO LOGIC CHANGES) ===== */
+
+/* remove branding & chrome */
+nav,
+footer,
+body::before,
+.brand-name,
+.mode-title,
+.mode-selection-vertical h1,
+#calculatorPageLogo {
+  display: none !important;
+}
+
+/* neutral background for shell */
+body {
+  background: #ffffff !important;
+  color: #111 !important;
+  padding: 0 !important;
+}
+
+/* remove decorative effects */
+.container {
+  margin: 0 auto !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+/* flatten buttons */
+button,
+.btn,
+.add-picture {
+  background: #e5e7eb !important;
+  color: #111 !important;
+  box-shadow: none !important;
+}
+
+/* keep layout readable inside shell */
+.client-info,
+.costs,
+.pictures,
+.workspace-container {
+  background: transparent !important;
+}
+
+/* ===== END DEVIsUALIZE ===== */
+ 
  </style>
 </head>
 <body>
