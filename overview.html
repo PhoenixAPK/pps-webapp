@@ -5,77 +5,66 @@
 <title>Overview | Phoenix Printing Solutions</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/pps-webapp/assets/js/supabase.js"></script>
+
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
 body{height:100vh;background:#f2f3f5}
 
-/* APP - REFACTORED TO REMOVE HEADER/FOOTER ROWS */
 .app{height:100vh;display:block}
-
-/* BODY - REFACTORED TO REMOVE SIDEBAR COLUMN */
 .body{display:block;height:100%}
-
-/* MAIN */
 main{position:relative;overflow-y:auto;height:100%}
 
 .background{
-    position:absolute;
-    inset:0;
-    background:
-        linear-gradient(rgba(255,255,255,0.94),rgba(255,255,255,0.94)),
-        url("background-uv-printer.jpg");
-    background-size:cover;
-    background-position:center;
-    z-index:0;
+ position:absolute;
+ inset:0;
+ background:
+  linear-gradient(rgba(255,255,255,0.94),rgba(255,255,255,0.94)),
+  url("background-uv-printer.jpg");
+ background-size:cover;
+ background-position:center;
+ z-index:0;
 }
 
 .content{
-    position:relative;
-    z-index:1;
-    padding:24px;
-    min-height:100%;
-    display:flex;
-    flex-direction:column;
+ position:relative;
+ z-index:1;
+ padding:24px;
+ min-height:100%;
+ display:flex;
+ flex-direction:column;
 }
 
-/* CHART */
 .chart-box{
-    background:#ffffff;
-    padding:16px;
-    border-radius:8px;
-    margin-bottom:32px;
-    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+ background:#ffffff;
+ padding:16px;
+ border-radius:8px;
+ margin-bottom:32px;
+ box-shadow:0 4px 12px rgba(0,0,0,0.08);
 }
 
 .chart-title{
-    display:flex;
-    justify-content:space-between;
-    font-size:14px;
-    margin-bottom:12px;
-    color:#374151;
+ display:flex;
+ justify-content:space-between;
+ font-size:14px;
+ margin-bottom:12px;
+ color:#374151;
 }
 
 canvas{width:100%;height:260px;display:block}
 
-/* LEGEND ICONS UNDER CHART */
 .chart-legend{
-    display:flex;
-    justify-content:center;
-    gap:20px;
-    margin-top:15px;
-    padding-top:10px;
-    border-top:1px solid #eee;
+ display:flex;
+ justify-content:center;
+ gap:20px;
+ margin-top:15px;
+ padding-top:10px;
+ border-top:1px solid #eee;
 }
 
-.legend-item{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    font-size:12px;
-    font-weight:600;
-    color:#4b5563;
-}
-
+.legend-item{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:#4b5563}
 .dot{width:12px;height:12px;border-radius:50%}
 .bg-pending{background:#f59e0b}
 .bg-progress{background:#3b82f6}
@@ -84,39 +73,29 @@ canvas{width:100%;height:260px;display:block}
 .bg-incomplete{background:#ef4444}
 .bg-interactions{background:#8b5cf6}
 
-/* CARDS */
 .cards-zone{
-    flex:1;
-    display:flex;
-    align-items:center;
-    justify-content:center;
+ flex:1;
+ display:flex;
+ align-items:center;
+ justify-content:center;
 }
 
 .cards{
-    display:grid;
-    grid-template-columns:repeat(3,220px);
-    gap:20px;
+ display:grid;
+ grid-template-columns:repeat(3,220px);
+ gap:20px;
 }
 
 .card{
-    background:#ffffff;
-    padding:16px;
-    border-radius:8px;
-    box-shadow:0 4px 12px rgba(0,0,0,0.08);
-    text-align:center;
+ background:#ffffff;
+ padding:16px;
+ border-radius:8px;
+ box-shadow:0 4px 12px rgba(0,0,0,0.08);
+ text-align:center;
 }
 
-.card h3{
-    font-size:14px;
-    margin-bottom:8px;
-    color:#374151;
-}
-
-.count{
-    font-size:26px;
-    font-weight:700;
-    color:#111827;
-}
+.card h3{font-size:14px;margin-bottom:8px;color:#374151}
+.count{font-size:26px;font-weight:700;color:#111827}
 </style>
 </head>
 
@@ -127,35 +106,34 @@ canvas{width:100%;height:260px;display:block}
 
 <main>
 <div class="background"></div>
-
 <div class="content">
 
 <div class="chart-box">
-    <div class="chart-title">
-        <span>Operational Overview – Current Month</span>
-        <span>Daily Activity</span>
-    </div>
-    <canvas id="activityChart"></canvas>
-    
-    <div class="chart-legend">
-        <div class="legend-item"><div class="dot bg-pending"></div>Pending</div>
-        <div class="legend-item"><div class="dot bg-progress"></div>In Progress</div>
-        <div class="legend-item"><div class="dot bg-completed"></div>Completed</div>
-        <div class="legend-item"><div class="dot bg-archived"></div>Archived</div>
-        <div class="legend-item"><div class="dot bg-incomplete"></div>Incomplete</div>
-        <div class="legend-item"><div class="dot bg-interactions"></div>Interactions</div>
-    </div>
+ <div class="chart-title">
+  <span>Operational Overview – Current Month</span>
+  <span>Daily Activity</span>
+ </div>
+ <canvas id="activityChart"></canvas>
+
+ <div class="chart-legend">
+  <div class="legend-item"><div class="dot bg-pending"></div>Pending</div>
+  <div class="legend-item"><div class="dot bg-progress"></div>In Progress</div>
+  <div class="legend-item"><div class="dot bg-completed"></div>Completed</div>
+  <div class="legend-item"><div class="dot bg-archived"></div>Archived</div>
+  <div class="legend-item"><div class="dot bg-incomplete"></div>Incomplete</div>
+  <div class="legend-item"><div class="dot bg-interactions"></div>Interactions</div>
+ </div>
 </div>
 
 <div class="cards-zone">
-    <div class="cards">
-        <div class="card"><h3>Pending</h3><div class="count">0</div></div>
-        <div class="card"><h3>In Progress</h3><div class="count">0</div></div>
-        <div class="card"><h3>Completed</h3><div class="count">0</div></div>
-        <div class="card"><h3>Archived</h3><div class="count">0</div></div>
-        <div class="card"><h3>Incomplete</h3><div class="count">0</div></div>
-        <div class="card"><h3>Interactions</h3><div class="count">0</div></div>
-    </div>
+ <div class="cards">
+  <div class="card"><h3>Pending</h3><div class="count" id="count-pending">0</div></div>
+  <div class="card"><h3>In Progress</h3><div class="count" id="count-inprogress">0</div></div>
+  <div class="card"><h3>Completed</h3><div class="count" id="count-completed">0</div></div>
+  <div class="card"><h3>Archived</h3><div class="count" id="count-archived">0</div></div>
+  <div class="card"><h3>Incomplete</h3><div class="count" id="count-incomplete">0</div></div>
+  <div class="card"><h3>Interactions</h3><div class="count" id="count-interactions">0</div></div>
+ </div>
 </div>
 
 </div>
@@ -164,8 +142,8 @@ canvas{width:100%;height:260px;display:block}
 </div>
 </div>
 
+<!-- ✅ CHART SCRIPT -->
 <script>
-/* CHART – FULL MONTH DATES */
 const canvas=document.getElementById("activityChart");
 const ctx=canvas.getContext("2d");
 canvas.width=canvas.offsetWidth;
@@ -176,24 +154,57 @@ const today=new Date();
 const daysInMonth=new Date(today.getFullYear(),today.getMonth()+1,0).getDate();
 const padding=60;
 
-/* GRID + WEEKDAYS */
 ctx.strokeStyle="#e5e7eb";
 ctx.font="11px Arial";
+
 for(let i=0;i<weekdays.length;i++){
-    const y=padding+i*((canvas.height-padding*2)/6);
-    ctx.beginPath();
-    ctx.moveTo(padding,y);
-    ctx.lineTo(canvas.width-padding,y);
-    ctx.stroke();
-    ctx.fillStyle="#374151";
-    ctx.fillText(weekdays[i],10,y+4);
+ const y=padding+i*((canvas.height-padding*2)/6);
+ ctx.beginPath();
+ ctx.moveTo(padding,y);
+ ctx.lineTo(canvas.width-padding,y);
+ ctx.stroke();
+ ctx.fillStyle="#374151";
+ ctx.fillText(weekdays[i],10,y+4);
 }
 
-/* FULL DATES 1..LAST DAY */
 for(let d=1;d<=daysInMonth;d++){
-    const x=padding+(d-1)*((canvas.width-padding*2)/(daysInMonth-1));
-    ctx.fillText(d,x-4,canvas.height-10);
+ const x=padding+(d-1)*((canvas.width-padding*2)/(daysInMonth-1));
+ ctx.fillText(d,x-4,canvas.height-10);
 }
+</script>
+
+<!-- ✅ OVERVIEW COUNTERS -->
+<script>
+async function loadOverviewCounters(){
+ if(!window.supabaseClient) return;
+
+ const { data, error } = await window.supabaseClient
+  .from("pps_queue")
+  .select("status");
+
+ if(error) return;
+
+ const counts={
+  pending:0,
+  "in-progress":0,
+  completed:0,
+  archived:0,
+  incomplete:0
+ };
+
+ data.forEach(row=>{
+  const key=row.status||"pending";
+  if(counts[key]!==undefined) counts[key]++;
+ });
+
+ document.getElementById("count-pending").textContent=counts.pending;
+ document.getElementById("count-inprogress").textContent=counts["in-progress"];
+ document.getElementById("count-completed").textContent=counts.completed;
+ document.getElementById("count-archived").textContent=counts.archived;
+ document.getElementById("count-incomplete").textContent=counts.incomplete;
+}
+
+document.addEventListener("DOMContentLoaded", loadOverviewCounters);
 </script>
 
 </body>
