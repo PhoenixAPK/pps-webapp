@@ -45,14 +45,13 @@ window.moveToInProgress = async (id) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization":
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1eW1hYnJrd3Rwdmhyb3BjdnFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyOTEyOTUsImV4cCI6MjA4ODg2NzI5NX0.kg7WvMRblzVf2iaQbt4Zz7DuNDgHGn9AKFHM_maGiTk"
+          "Authorization": "Bearer YOUR_ANON_KEY"
         },
         body: JSON.stringify({ request_id: id })
       }
     );
-  } catch (err) {
-    console.error(err);
+  } catch {
+    // silent on purpose
   }
 };
 
